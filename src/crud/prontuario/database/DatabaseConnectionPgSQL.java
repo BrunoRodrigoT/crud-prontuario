@@ -4,25 +4,27 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseConnectionPgSQL implements IConnection {
-	
-	private final String USERNAME = "brunorodrigo";
-	private final String PASSWORD = "root";
-	private final String ADDRESS = "localhost";
-	private final String PORT = "5432";
-	private final String DATABASE = "prontuario";
+import crud.prontuario.utils.EnvLoader;
 
-	 private Connection connection;
-	 
-	public Connection getConnection() {
-		try {
-			 String url = "jdbc:postgresql://" + ADDRESS + ":" + PORT + "/" + DATABASE;
-			return DriverManager.getConnection(url, USERNAME, PASSWORD);
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+public class DatabaseConnectionPgSQL implements IConnection {
+
+    private final String USERNAME = EnvLoader.get("DB_USERNAME");
+    private final String PASSWORD = EnvLoader.get("DB_PASSWORD");
+    private final String ADDRESS = EnvLoader.get("DB_ADDRESS");
+    private final String PORT = EnvLoader.get("DB_PORT");
+    private final String DATABASE = EnvLoader.get("DB_NAME");
+
+    private Connection connection;
+
+    public Connection getConnection() {
+        try {
+            String url = "jdbc:postgresql://" + ADDRESS + ":" + PORT + "/" + DATABASE;
+            return DriverManager.getConnection(url, USERNAME, PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public void closeConnection() {
         try {

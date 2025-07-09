@@ -1,9 +1,16 @@
 #!/bin/bash
 
-echo "Compilando..."
-javac -d bin src/**/*.java
+set -e  # Encerra o script se algum comando falhar
+
+echo "Limpando compilação anterior..."
+rm -rf out aplicacao.jar
+
+echo "Compilando arquivos Java..."
+mkdir -p out
+javac -d out $(find src -name "*.java")
 
 echo "Empacotando .jar..."
-jar cvfm aplicacao.jar MANIFEST.MF -C bin .
+jar cfm aplicacao.jar MANIFEST.MF -C out .
 
-echo "Pronto! Execute com: java -jar aplicacao.jar"
+echo "✅ Build finalizado com sucesso!"
+echo "▶️ Execute com: ./run.sh"
